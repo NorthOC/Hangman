@@ -1,7 +1,9 @@
-class Game
+require './file_filter.rb'
 
+class Game
+  include Secret
   def initialize()
-    @word = "hello".downcase
+    @word = secret().downcase
     @turns = '|' * 12
     @letters_used = []
     @letter_count = '_' * @word.length
