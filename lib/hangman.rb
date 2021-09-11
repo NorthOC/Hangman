@@ -1,4 +1,4 @@
-require './file_filter.rb'
+require './lib/file_filter.rb'
 require 'yaml'
 
 #Game class handles logic and saving game state
@@ -30,14 +30,14 @@ class Game
 
     if guess == 'save'
       save()
-      print "Enter a letter: "
+      print "  Enter a letter: "
       guess = gets.chomp.downcase
     end
 
     guess == 'save' ? save() : guess
 
     until @letters_used.index(guess) == nil && guess.length == 1 && guess.match?(/[a-z]/)
-      print "Invalid input. Try again: "
+      print "  Invalid input. Try again: "
       guess = gets.chomp.downcase
     end
 
@@ -77,7 +77,7 @@ class Game
       system('clear')
       puts "You Win!\n"
       if @save
-	File.delete("../player_saves/#{@save}.yml")
+	File.delete("./player_saves/#{@save}.yml")
       end
     else
       system('clear')
@@ -88,7 +88,7 @@ class Game
 
 #serializes the current state of the game into a yaml file and resumes the game.
   def save()
-  print "Enter the name of your save: "
+  print "  Enter the name of your save: "
   savename = gets.chomp
 
   until /^[[:alpha:]]+$/.match?(savename)
@@ -100,9 +100,9 @@ class Game
 	letter_count: @letter_count,
 	letters_used: @letters_used,
 	save: savename}
-  File.open("../player_saves/#{savename}.yml", "w") { |file| file.write(data.to_yaml) }
+  File.open("./player_saves/#{savename}.yml", "w") { |file| file.write(data.to_yaml) }
 
-  puts "Your Game has been saved!\n"
+  puts "  Your Game has been saved!\n"
   end
 
 end

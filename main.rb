@@ -1,5 +1,5 @@
 require 'yaml'
-require './hangman.rb'
+require './lib/hangman.rb'
 
 class StartMenu
 	def initialize()
@@ -30,7 +30,7 @@ class StartMenu
 
 #loading mechanic to start a game with the previously serialized data in hangman.rb
 	def load_game()
-	  arr = Dir.entries("../player_saves").filter { |item| !item.start_with?('.')}
+	  arr = Dir.entries("./player_saves").filter { |item| !item.start_with?('.')}
 
 #if there's no save files, start a new game.
 	  if arr.count == 0
@@ -45,7 +45,7 @@ class StartMenu
 	  puts "Enter a correct number"
 	  file_index = gets.chomp.to_i
 	  end
-	  load_file = YAML.load(File.read("../player_saves/#{arr[file_index - 1]}.yml"))
+	  load_file = YAML.load(File.read("./player_saves/#{arr[file_index - 1]}.yml"))
 	  system('clear')
 	  Game.new(load_file[:word],
 		   load_file[:turns],
