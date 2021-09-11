@@ -6,12 +6,14 @@ class Game
   def initialize(word = secret().downcase,
 		turns = '|' * 12,
 		letters_used = [],
-		letter_count = '_' * word.length)
+		letter_count = '_' * word.length,
+		save = false)
 
     @word = word
     @turns = turns
     @letters_used = letters_used
     @letter_count = letter_count
+    @save = save
     play_game()
   end
 
@@ -57,7 +59,7 @@ class Game
     puts @letter_count
     puts "letters used: #{@letters_used.join(" ")} "
     puts "Turns #{@turns}"
-    print "Enter a guess: "
+    print "Enter a guess(or save):  "
 
   end
 
@@ -65,6 +67,9 @@ class Game
 
     if @letter_count.index('_') == nil
       puts "You Win!"
+      if @save
+	File.delete("../player_saves/#{@save}.yml")
+      end
     else
       puts "You Loose! The answer was #{@word}!"
     end
@@ -79,16 +84,14 @@ class Game
       print "Enter only letters: "
       savename = gets.chomp
   end
-
   data = {word: @word,
 	turns: @turns,
-	guessed: @guessed,
-	letters_used: @letters_used}
+	letter_count: @letter_count,
+	letters_used: @letters_used,
+	save: savename}
   File.open("../player_saves/#{savename}.yml", "w") { |file| file.write(data.to_yaml) }
 
   puts "Your Game has been saved!\n"
   end
 
 end
-
-Game.new
