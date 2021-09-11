@@ -5,10 +5,10 @@ class StartMenu
 	def initialize()
 	system('clear')
 	puts "Welcome to Hangman - THE GAME!\n\n"
-	puts "Get a word, try to guess it."
-	puts "If you guess, you win. If your turns end, you loose.\n\n"
+	puts "Get a word. Enter a letter,  and try to guess it."
+	puts "Hints will help you. If you guess, you win. If your turns end, you loose.\n\n"
 	puts "Tip for never loosing?\n"
-	puts "Save the game and reload if you run out of turns!"
+	puts "Save the game by typing 'save' and reload the program if you run out of turns!"
 	puts "Good LUCK!\n\n"
 
         puts '1. New game'
@@ -27,8 +27,12 @@ class StartMenu
 		load_game
 	end
 	end
+
+#loading mechanic to start a game with the previously serialized data in hangman.rb
 	def load_game()
 	  arr = Dir.entries("../player_saves").filter { |item| !item.start_with?('.')}
+
+#if there's no save files, start a new game.
 	  if arr.count == 0
 		puts "No files to load. Starting new game..."
 		sleep (2)

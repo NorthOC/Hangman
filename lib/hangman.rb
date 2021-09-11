@@ -1,7 +1,9 @@
 require './file_filter.rb'
 require 'yaml'
 
+#Game class handles logic and saving game state
 class Game
+#Secret provides a random word for player (Array.sample => String)
   include Secret
   def initialize(word = secret().downcase,
 		turns = '|' * 12,
@@ -19,6 +21,7 @@ class Game
 
   private
 
+#Game logic
   def play_game()
 
     while @letter_count.index('_') != nil && @turns.length > 0
@@ -27,7 +30,7 @@ class Game
 
     if guess == 'save'
       save()
-      print "Enter a guess: "
+      print "Enter a letter: "
       guess = gets.chomp.downcase
     end
 
@@ -53,29 +56,37 @@ class Game
    ending()
   end
 
+#Visuals for the player
   def print_info()
     
     system('clear')
-    puts @letter_count
-    puts "letters used: #{@letters_used.join(" ")} "
-    puts "Turns #{@turns}"
-    print "Enter a guess(or save):  "
+    puts "\n\n\n\n"
+    puts "  #{@letter_count}", "\n"
+    puts "  letters used: #{@letters_used.join(" ")} \n\n"
+    puts "  Turns #{@turns}\n\n"
+    print "  Enter a letter or type 'save':  "
 
   end
+
+#If player wins after loading the save file, the save file gets deleted.
+#On loosing, the word is revealed
 
   def ending()
 
     if @letter_count.index('_') == nil
-      puts "You Win!"
+      system('clear')
+      puts "You Win!\n"
       if @save
 	File.delete("../player_saves/#{@save}.yml")
       end
     else
-      puts "You Loose! The answer was #{@word}!"
+      system('clear')
+      puts "You Loose! The answer was #{@word}!\n"
     end
 
   end
 
+#serializes the current state of the game into a yaml file and resumes the game.
   def save()
   print "Enter the name of your save: "
   savename = gets.chomp
